@@ -1,0 +1,1638 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8"/><meta http-equiv="X-UA-Compatible" content="IE=edge"><meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=0"/><meta name="theme-color" content="#3b3e43"><meta name="apple-mobile-web-app-capable" content="yes"><meta name="mobile-web-app-capable" content="yes"/><meta name="apple-mobile-web-app-status-bar-style" content="black"><meta name="format-detection" content="telephone=no"/><title>基于阿里云盘的共享云盘搭建 - 冷眸的个人博客</title><meta name="description" content="冷眸的日常记录日志博客系统"/><meta property="og:description" content="冷眸的日常记录日志博客系统"/>    <meta name="keywords" content="冷眸,程序员"/><link rel="dns-prefetch" href="https://lengmou233.github.io"/><link rel="dns-prefetch" href="//cdn.jsdelivr.net"/><link rel="preconnect" href="https://lengmou233.github.io"><link rel="icon" type="image/png" href="https://b3log.org/images/brand/solo-128.png"/><link rel="apple-touch-icon" href="https://b3log.org/images/brand/solo-128.png"><link rel="shortcut icon" type="image/x-icon" href="https://b3log.org/images/brand/solo-128.png"><meta name="copyright" content="B3log"/><meta http-equiv="Window-target" content="_top"/><meta property="og:locale" content="zh_CN"/><meta property="og:title" content="基于阿里云盘的共享云盘搭建 - 冷眸的个人博客"/><meta property="og:site_name" content="冷眸的个人博客"/><meta property="og:url"      content="https://lengmou233.github.io/articles/2021/03/31/1617160877140.html?"/><meta property="og:image" content="https://b3log.org/images/brand/solo-128.png"/><link rel="search" type="application/opensearchdescription+xml" title="基于阿里云盘的共享云盘搭建 - 冷眸的个人博客" href="/opensearch.xml"><link href="https://lengmou233.github.io/rss.xml" title="RSS" type="application/rss+xml" rel="alternate"/><link rel="manifest" href="https://lengmou233.github.io/manifest.json">        <link rel="canonical" href="https://lengmou233.github.io/articles/2021/03/31/1617160877140.html">        <link rel="stylesheet"
+              href="https://lengmou233.github.io/skins/Bubble/css/base.css?1618458943634"/>
+            <link rel="prev" title="java的克隆" href="https://lengmou233.github.io/articles/2021/03/23/1616465484570.html">
+            <link rel="next" title="docker编写dockerfile，自定义tomcat镜像" href="https://lengmou233.github.io/articles/2021/05/11/1620724829593.html">
+    <script src="https://cdn.jsdelivr.net/npm/vditor@3.6.6/dist/js/icons/ant.js" async="" id="vditorIconScript"></script></head>
+<body class="fn__flex-column">
+<div id="pjax" class="fn__flex-1">
+    
+    <progress class="fn__progress"></progress>
+    <header class="header header--article">
+        <div class="wrapper header__title">
+            <h1 class="header__h1 fn__flex-inline">
+                <a href="https://lengmou233.github.io" rel="start">冷眸的个人博客</a>
+            </h1>
+            <h2 class="header__desc header__desc--title">记录bug人生</h2>
+            <div class="header__desc">
+                何时才能实现财富自由！！！
+            </div>
+            <svg class="header__down" id="headerDown" viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M15.992 25.304c-0 0-0 0-0.001 0-0.516 0-0.981-0.216-1.31-0.563l-0.001-0.001-14.187-14.996c-0.306-0.323-0.494-0.76-0.494-1.241 0-0.998 0.809-1.807 1.807-1.807 0.517 0 0.983 0.217 1.313 0.565l0.001 0.001 12.875 13.612 12.886-13.612c0.331-0.348 0.797-0.565 1.314-0.565 0.481 0 0.918 0.187 1.242 0.493l-0.001-0.001c0.723 0.687 0.755 1.832 0.072 2.555l-14.201 14.996c-0.33 0.348-0.795 0.564-1.311 0.564-0.001 0-0.003 0-0.004 0h0z"></path>
+            </svg>
+        </div>
+    </header>
+    <div class="side__menu">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+        </svg>
+        <span>
+            &nbsp; menu
+        </span>
+    </div>
+    <div class="side__main">
+        <div class="side__bg"></div>
+        <div class="side__panel">
+            <svg class="side__close ft__a" version="1.1" xmlns="http://www.w3.org/2000/svg" width="20" height="20"
+                 viewBox="0 0 20 20">
+                <path d="M18.362 19.324c-0.902 0.902-2.363 0.902-3.263 0l-5.098-5.827-5.098 5.825c-0.902 0.902-2.363 0.902-3.263 0-0.902-0.902-0.902-2.363 0-3.263l5.304-6.057-5.306-6.061c-0.902-0.902-0.902-2.361 0-3.263s2.361-0.902 3.263 0l5.1 5.829 5.098-5.829c0.902-0.902 2.361-0.902 3.263 0s0.902 2.363 0 3.263l-5.304 6.061 5.304 6.057c0.902 0.902 0.902 2.363 0 3.265z"></path>
+            </svg>
+
+            <div class="side__header">
+                <a href="https://lengmou233.github.io" rel="start"><img class="side__logo" alt="冷眸的个人博客" src="https://b3logfile.com/avatar/1614670544540_1614752112409.jpeg?imageView2/1/w/128/h/128/interlace/0/q/100"></a>
+
+                <div class="side__meta">
+                    8 文章 <br>
+                    <span data-uvstaturl="https://lengmou233.github.io">0</span> 浏览
+                    
+                </div>
+            </div>
+
+            <div class="side__title">
+                <span>ღゝ◡╹)ノ❤️</span>
+            </div>
+            <ul class="side__nav">
+                <li>
+                    <a href="https://lengmou233.github.io" rel="start">
+                            冷眸的个人博客
+                    </a>
+                </li>
+                <li>
+                    <a href="https://lengmou233.github.io/categories.html">分类</a>
+                </li>
+                <li>
+                    <a href="https://lengmou233.github.io/tags.html">标签墙</a>
+                </li>
+                <li>
+                    <a href="https://lengmou233.github.io/archives.html">存档</a>
+                </li>
+                <li>
+                    <a href="https://lengmou233.github.io/links.html">友链</a>
+                </li>
+                <li>
+                    <a rel="alternate" href="https://lengmou233.github.io/rss.xml">RSS</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+    <div class="article__top" style="background-image: url(https://b3logfile.com/file/2021/03/solo-fetchupload-6149940238218394793-09701427.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)">
+        <div style="background-image: url(https://b3logfile.com/file/2021/03/solo-fetchupload-6149940238218394793-09701427.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100)"></div>
+        <canvas id="articleTop"></canvas>
+    </div>
+    <div class="article">
+        <div class="ft__center">
+            <div class="article__meta">
+                <time>
+                    2021-03-31
+                </time>
+                /
+                    <a rel="tag"
+                       href="https://lengmou233.github.io/tags/%E6%8A%93%E5%8C%85">抓包</a> &nbsp;
+                    <a rel="tag"
+                       href="https://lengmou233.github.io/tags/java">java</a> &nbsp;
+                    <a rel="tag"
+                       href="https://lengmou233.github.io/tags/%E7%BD%91%E7%9B%98">网盘</a> &nbsp;
+                    <a rel="tag"
+                       href="https://lengmou233.github.io/tags/%E4%BA%91%E7%9B%98">云盘</a> &nbsp;
+            </div>
+            <h2 class="article__title">
+                基于阿里云盘的共享云盘搭建
+            </h2>
+<div class="article__share"
+     data-title="基于阿里云盘的共享云盘搭建"
+     data-blogtitle="冷眸的个人博客"
+     data-url="https://lengmou233.github.io/articles/2021/03/31/1617160877140.html"
+     data-avatar="https://b3logfile.com/avatar/1614670544540_1614752112409.jpeg?imageView2/1/w/128/h/128/interlace/0/q/100">
+    <span class="item" data-type="qqz">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M22.824 13.989l-8.348 6.287s3.351 0.522 8.404 0.461l-0.23-1.040 7.2-6.549c0.132-0.12 0.183-0.312 0.129-0.487s-0.203-0.299-0.377-0.314l-9.492-0.856-3.708-9.213c-0.068-0.169-0.226-0.279-0.401-0.279s-0.333 0.11-0.401 0.279l-3.708 9.213-9.492 0.856c-0.174 0.015-0.323 0.139-0.377 0.314s-0.004 0.366 0.129 0.487l7.2 6.549-2.158 9.742c-0.040 0.178 0.026 0.365 0.168 0.474 0.142 0.107 0.331 0.115 0.481 0.021l8.158-5.165 8.158 5.165c0.070 0.045 0.147 0.066 0.225 0.066 0.090 0 0.18-0.029 0.256-0.086 0.142-0.109 0.208-0.295 0.168-0.474l-1.707-7.704c0.732-0.386 1.538-1.040 1.538-1.040s-3.195 1.638-14.664 0.838l8.312-6.325s-0.327-0.534-10.744-0.914c-0.697-0.026 8.493-1.83 15.281-0.305z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="wechat">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="weibo">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M13.444 27.064c-5.3 0.525-9.875-1.875-10.219-5.35-0.344-3.481 3.675-6.719 8.969-7.244 5.3-0.525 9.875 1.875 10.212 5.35 0.35 3.481-3.669 6.725-8.963 7.244zM24.038 15.521c-0.45-0.137-0.762-0.225-0.525-0.819 0.512-1.287 0.563-2.394 0.006-3.188-1.038-1.481-3.881-1.406-7.137-0.037 0 0-1.025 0.444-0.762-0.363 0.5-1.613 0.425-2.956-0.356-3.737-1.769-1.769-6.469 0.069-10.5 4.1-3.013 3.006-4.763 6.212-4.763 8.981 0 5.287 6.787 8.506 13.425 8.506 8.7 0 14.494-5.056 14.494-9.069 0-2.431-2.044-3.806-3.881-4.375z"></path>
+            <path d="M29.819 5.833c-2.1-2.331-5.2-3.219-8.063-2.612v0c-0.663 0.144-1.081 0.794-0.938 1.45 0.144 0.662 0.788 1.081 1.45 0.938 2.038-0.431 4.238 0.2 5.731 1.856s1.9 3.913 1.256 5.888v0c-0.206 0.644 0.144 1.331 0.788 1.544 0.644 0.206 1.331-0.144 1.544-0.787v-0.006c0.9-2.762 0.331-5.938-1.769-8.269z"></path>
+            <path d="M26.588 8.752c-1.025-1.138-2.538-1.569-3.925-1.269-0.569 0.119-0.931 0.688-0.813 1.256 0.125 0.569 0.688 0.931 1.25 0.806v0c0.681-0.144 1.419 0.069 1.919 0.619 0.5 0.556 0.637 1.313 0.419 1.975v0c-0.175 0.55 0.125 1.15 0.681 1.331 0.556 0.175 1.15-0.125 1.331-0.681 0.438-1.356 0.163-2.906-0.863-4.037z"></path>
+            <path d="M13.738 20.771c-0.188 0.319-0.594 0.469-0.912 0.337-0.319-0.125-0.412-0.488-0.231-0.794 0.188-0.306 0.581-0.456 0.894-0.337 0.313 0.113 0.425 0.469 0.25 0.794zM12.044 22.933c-0.512 0.819-1.613 1.175-2.438 0.8-0.813-0.369-1.056-1.319-0.544-2.119 0.506-0.794 1.569-1.15 2.388-0.806 0.831 0.356 1.1 1.3 0.594 2.125zM13.969 17.146c-2.519-0.656-5.369 0.6-6.463 2.819-1.119 2.262-0.037 4.781 2.506 5.606 2.638 0.85 5.75-0.456 6.831-2.894 1.069-2.394-0.262-4.85-2.875-5.531z"></path>
+        </svg>
+    </span>
+    <span class="item" data-type="twitter">
+        <svg viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32.003 6.075c-1.175 0.525-2.444 0.875-3.769 1.031 1.356-0.813 2.394-2.1 2.887-3.631-1.269 0.75-2.675 1.3-4.169 1.594-1.2-1.275-2.906-2.069-4.794-2.069-3.625 0-6.563 2.938-6.563 6.563 0 0.512 0.056 1.012 0.169 1.494-5.456-0.275-10.294-2.888-13.531-6.862-0.563 0.969-0.887 2.1-0.887 3.3 0 2.275 1.156 4.287 2.919 5.463-1.075-0.031-2.087-0.331-2.975-0.819 0 0.025 0 0.056 0 0.081 0 3.181 2.263 5.838 5.269 6.437-0.55 0.15-1.131 0.231-1.731 0.231-0.425 0-0.831-0.044-1.237-0.119 0.838 2.606 3.263 4.506 6.131 4.563-2.25 1.762-5.075 2.813-8.156 2.813-0.531 0-1.050-0.031-1.569-0.094 2.913 1.869 6.362 2.95 10.069 2.95 12.075 0 18.681-10.006 18.681-18.681 0-0.287-0.006-0.569-0.019-0.85 1.281-0.919 2.394-2.075 3.275-3.394z"></path>
+        </svg>
+    </span>
+    <span class="item__qr"></span>
+</div>        </div>
+        <div class="wrapper">
+            <section class="vditor-reset articles article__content">
+                <h3 id="toc_h3_0">背景</h3>
+<p>什么？阿里云盘公测了！？ 听说下载不限速？非常nice！</p>
+<p>但是好像分享功能还没有上线，这对于程序员的我来说，这是难不住我了，既然官方还没有开放，那我就自己做一个。</p>
+<h3 id="toc_h3_1">抓到的api</h3>
+<p>阿里云盘有一个APP版，还有一个网页版，自然是从网页版开始入手。</p>
+<p><img src="https://b3logfile.com/file/2021/03/solo-fetchupload-6149940238218394793-09701427.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image-20210331100628902"></p>
+<p>首先抓到了个显示文件列表的</p>
+<h4 id="toc_h4_2">显示文件列表</h4>
+<p><a href="https://api.aliyundrive.com/v2/file/list" target="_blank">https://api.aliyundrive.com/v2/file/list</a></p>
+<p>请求头</p>
+<p>| key | value | 备注 |<br>
+| - | - | - |<br>
+| authorization | eyJhbGciOiJSU... | access_token（2小时刷新一次）详见刷新token |</p>
+<table>
+<thead>
+<tr><th align="center">key</th><th align="center">value</th><th align="center">备注</th></tr>
+</thead>
+<tbody>
+<tr><td align="center">drive_id</td><td align="center">1223242</td><td align="center">磁盘id值</td></tr>
+<tr><td align="center">parent_file_id</td><td align="center">root</td><td align="center">上级文件夹路径</td></tr>
+<tr><td align="center">limit</td><td align="center">100</td><td align="center">一页显示文件数量</td></tr>
+<tr><td align="center">all</td><td align="center">false</td><td align="center">是否显示全部</td></tr>
+<tr><td align="center">image_thumbnail_process</td><td align="center">image/resize,w_160/format,jpeg</td><td align="center">图片缩略图类型</td></tr>
+<tr><td align="center">order_by</td><td align="center">updated_at</td><td align="center">排序字段</td></tr>
+<tr><td align="center">order_direction</td><td align="center">desc</td><td align="center">排序顺序</td></tr>
+<tr><td align="center">fields</td><td align="center">*</td><td align="center">未知</td></tr>
+</tbody>
+</table>
+<p>返回值</p>
+<pre><code class="language-json">"items": [
+        {
+            "drive_id": "1223242",
+            "domain_id": "bj29",
+            "file_id": "6038dc66b124e011132a46aaaaf6fffff08ebc36",
+            "name": "VID_20210223_214248.mp4",
+            "type": "file",
+            "content_type": "video/mp4",
+            "created_at": "2021-02-26T11:32:54.009Z",
+            "updated_at": "2021-02-26T11:32:54.339Z",
+            "file_extension": "mp4",
+            "hidden": false,
+            "size": 136280333,
+            "starred": false,
+            "status": "available",
+            "user_meta": "{\"size\":136280333,\"android_local_file_path\":\"/storage/emulated/0/DCIM/Camera/VID_20210223_214248.mp4\",\"time\":1614059022000,\"hash\":\"0C716CF6846CCE079ECD92224724A22ADC71D406\"}",
+            "labels": [
+                "烹饪 (菜品)",
+                "儿童艺术",
+                "微笑",
+                "快餐",
+                "球鞋",
+                "杯子",
+                "鞋类",
+                "小吃",
+                "晚餐",
+                "海报",
+                "椅",
+                "T恤",
+                "碟",
+                "白色",
+                "人像",
+                "餐具",
+                "画画",
+                "厨师",
+                "幼儿",
+                "服装"
+            ],
+            "upload_id": "rapid-2e781a23-22a0-423c-8a93-bab1beb59733",
+            "parent_file_id": "6038dc5554da0d739e39471cb9c53bdcdac45dec",
+            "crc64_hash": "3598408307415484129",
+            "content_hash": "BED8D94F248873F6875403B8BDC94817CD427006",
+            "content_hash_name": "sha1",
+            "download_url": "https://bj29.cn-beijing.data.alicloudccp.com/6038dbd25b5b385da00b4646add4caf99bc21c9d%2F6038dbd2e476ab32c0af4a0da7710750162a6109?di=bj29&amp;dr=1223242&amp;f=6038dc66b124e011132a46aaaaf6fffff08ebc36&amp;response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27VID_20210223_214248.mp4&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-signature=eMloFbbvX7u22UPsoIehH0XE49u%2Fx5%2BN4BMLaN7yC%2Fw%3D&amp;x-oss-signature-version=OSS2",
+            "url": "https://bj29.cn-beijing.data.alicloudccp.com/6038dbd25b5b385da00b4646add4caf99bc21c9d%2F6038dbd2e476ab32c0af4a0da7710750162a6109?di=bj29&amp;dr=1223242&amp;f=6038dc66b124e011132a46aaaaf6fffff08ebc36&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-signature=K5D1Oxdg38RNZNm7RDQ0UY2SQDsFnvI3X%2FDo8Dmki6I%3D&amp;x-oss-signature-version=OSS2",
+            "thumbnail": "https://bj29.cn-beijing.data.alicloudccp.com/6038dbd25b5b385da00b4646add4caf99bc21c9d%2F6038dbd2e476ab32c0af4a0da7710750162a6109?x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-process=video%2Fsnapshot%2Ct_0%2Cf_jpg%2Cw_300&amp;x-oss-signature=0jzYbkDEv3njJljFJgonmurOo72H%2Bt49kcn%2FBXLF6jM%3D&amp;x-oss-signature-version=OSS2",
+            "category": "video",
+            "encrypt_mode": "none",
+            "video_media_metadata": {
+                "time": "2021-02-23T13:43:42.000Z",
+                "width": 1920,
+                "height": 1080,
+                "image_tags": [
+                    {
+                        "confidence": 0.9825762790792129,
+                        "name": "食物饮料",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9923276305198669,
+                        "name": "面部",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.8011763691902161,
+                        "name": "年龄段",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9976219579025551,
+                        "name": "衣服",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.7839520233018058,
+                        "name": "艺术品",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.8449591823986599,
+                        "name": "职业&amp;角色",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.820408284664154,
+                        "name": "其他",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.8314134081204733,
+                        "name": "日常行为",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.8616611758867899,
+                        "name": "家具",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9675047516822814,
+                        "name": "日常用品",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.7782116880019506,
+                        "name": "外貌特征",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9271179407835006,
+                        "name": "其他场景",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9833651361642061,
+                        "parent_name": "面部",
+                        "name": "人",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9825762790792129,
+                        "parent_name": "食物饮料",
+                        "name": "菜品",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7318126559257507,
+                        "parent_name": "艺术品",
+                        "name": "佩斯利",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9692407846450806,
+                        "parent_name": "衣服",
+                        "name": "珠宝",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7272474765777588,
+                        "parent_name": "日常用品",
+                        "name": "玩具",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8236032088597616,
+                        "parent_name": "食物饮料",
+                        "name": "饮料",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7782116880019506,
+                        "parent_name": "外貌特征",
+                        "name": "微笑",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9271179407835006,
+                        "parent_name": "其他场景",
+                        "name": "快餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9675047516822814,
+                        "parent_name": "日常用品",
+                        "name": "餐具",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8220808684825898,
+                        "parent_name": "日常行为",
+                        "name": "吃",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9850760319016196,
+                        "parent_name": "衣服",
+                        "name": "T恤",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8314134081204733,
+                        "parent_name": "日常行为",
+                        "name": "晚餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.743120186858707,
+                        "parent_name": "日常用品",
+                        "name": "杯子",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7124511823058128,
+                        "parent_name": "日常行为",
+                        "name": "早午餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8624917450158492,
+                        "parent_name": "衣服",
+                        "name": "外套",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8449591823986599,
+                        "parent_name": "职业&amp;角色",
+                        "name": "厨师",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9414882159233093,
+                        "parent_name": "面部",
+                        "name": "男性",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9923276305198669,
+                        "parent_name": "面部",
+                        "name": "人像",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7988193035125732,
+                        "parent_name": "年龄段",
+                        "name": "婴儿",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7625196933746338,
+                        "parent_name": "日常行为",
+                        "name": "烹饪",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7596184611320496,
+                        "parent_name": "艺术品",
+                        "name": "海报",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8616611758867899,
+                        "parent_name": "家具",
+                        "name": "椅",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.882918914159139,
+                        "parent_name": "衣服",
+                        "name": "鞋",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7714708050092062,
+                        "parent_name": "艺术品",
+                        "name": "儿童艺术",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8011763691902161,
+                        "parent_name": "年龄段",
+                        "name": "幼儿",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9976219579025551,
+                        "parent_name": "衣服",
+                        "name": "服装",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9803289771080017,
+                        "parent_name": "衣服",
+                        "name": "球鞋",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9724782407283783,
+                        "parent_name": "衣服",
+                        "name": "鞋类",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7719930410385132,
+                        "parent_name": "艺术品",
+                        "name": "画画",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7286345362663269,
+                        "parent_name": "衣服",
+                        "name": "眼镜",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7036389437588778,
+                        "parent_name": "面部",
+                        "name": "女性",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.820408284664154,
+                        "parent_name": "其他",
+                        "name": "颜色",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.703624963760376,
+                        "parent_name": "日常行为",
+                        "name": "午餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7333434224128723,
+                        "parent_name": "菜品",
+                        "name": "垃圾食品",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.9152717870824477,
+                        "parent_name": "菜品",
+                        "name": "小吃",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.7315773963928223,
+                        "parent_name": "菜品",
+                        "name": "三明治",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.9592457483796513,
+                        "parent_name": "菜品",
+                        "name": "烹饪 (菜品)",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.7795020341873169,
+                        "parent_name": "颜色",
+                        "name": "黑色",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.9825762790792129,
+                        "parent_name": "菜品",
+                        "name": "碟",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.820408284664154,
+                        "parent_name": "颜色",
+                        "name": "白色",
+                        "tag_level": 3
+                    }
+                ],
+                "video_media_video_stream": [
+                    {
+                        "duration": "53.922833",
+                        "clarity": "1080",
+                        "fps": "19374000/323537",
+                        "bitrate": "19933246",
+                        "code_name": "h264",
+                        "rotate": "90"
+                    }
+                ],
+                "video_media_audio_stream": [
+                    {
+                        "duration": "53.888000",
+                        "channels": 2,
+                        "channel_layout": "stereo",
+                        "bit_rate": "96089",
+                        "code_name": "aac",
+                        "sample_rate": "48000"
+                    }
+                ],
+                "duration": "53.924"
+            },
+            "video_preview_metadata": {
+                "bitrate": "20218321",
+                "duration": "53.923500",
+                "audio_format": "aac",
+                "video_format": "h264",
+                "frame_rate": "19374000/323537",
+                "height": 1920,
+                "width": 1080,
+                "template_list": [
+                    {
+                        "template_id": "LD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "SD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "HD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "FHD",
+                        "status": "finished"
+                    }
+                ]
+            },
+            "punish_flag": 0
+        },
+        {
+            "drive_id": "1223242",
+            "domain_id": "bj29",
+            "file_id": "6038dc61c5768a2e9604450fbb97fda2ba32c770",
+            "name": "VID_20210223_214246.mp4",
+            "type": "file",
+            "content_type": "video/mp4",
+            "created_at": "2021-02-26T11:32:49.985Z",
+            "updated_at": "2021-02-26T11:32:54.169Z",
+            "file_extension": "mp4",
+            "hidden": false,
+            "size": 1566348,
+            "starred": false,
+            "status": "available",
+            "user_meta": "{\"size\":1566348,\"android_local_file_path\":\"/storage/emulated/0/DCIM/Camera/VID_20210223_214246.mp4\",\"time\":1614058967000,\"hash\":\"C69DCD3BD4013F9C60E5F280AA76EF828FC854E7\"}",
+            "labels": [
+                "服装",
+                "餐具",
+                "快餐",
+                "碟",
+                "人",
+                "晚餐",
+                "烹饪 (菜品)"
+            ],
+            "upload_id": "429E1612CCFE4ECE911F731ABE043644",
+            "parent_file_id": "6038dc5554da0d739e39471cb9c53bdcdac45dec",
+            "crc64_hash": "2666612379672871359",
+            "content_hash": "91BC159F0B00CE279289464078A3D637A7D099F0",
+            "content_hash_name": "sha1",
+            "download_url": "https://bj29.cn-beijing.data.alicloudccp.com/6038dc61c5768a2e9604450fbb97fda2ba32c770%2F6038dc61af4dcac31f6542cdbd2ae69963d97510?di=bj29&amp;dr=1223242&amp;f=6038dc61c5768a2e9604450fbb97fda2ba32c770&amp;response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27VID_20210223_214246.mp4&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-signature=a%2FdJxYLuXQMsfLBZAKts5CSmuAJWEjYT1MCnVbrCz94%3D&amp;x-oss-signature-version=OSS2",
+            "url": "https://bj29.cn-beijing.data.alicloudccp.com/6038dc61c5768a2e9604450fbb97fda2ba32c770%2F6038dc61af4dcac31f6542cdbd2ae69963d97510?di=bj29&amp;dr=1223242&amp;f=6038dc61c5768a2e9604450fbb97fda2ba32c770&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-signature=ETMcMTaZRz%2B9EykUbrcpQneLWKkpAZu7Z10dOd%2FRPos%3D&amp;x-oss-signature-version=OSS2",
+            "thumbnail": "https://bj29.cn-beijing.data.alicloudccp.com/6038dc61c5768a2e9604450fbb97fda2ba32c770%2F6038dc61af4dcac31f6542cdbd2ae69963d97510?x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617157812&amp;x-oss-process=video%2Fsnapshot%2Ct_0%2Cf_jpg%2Cw_300&amp;x-oss-signature=o6bswXryerhwBQ%2BsDGWwVHARbzOTHssKWYZ7gMPq3b0%3D&amp;x-oss-signature-version=OSS2",
+            "category": "video",
+            "encrypt_mode": "none",
+            "video_media_metadata": {
+                "time": "2021-02-23T13:42:47.000Z",
+                "width": 1920,
+                "height": 1080,
+                "image_tags": [
+                    {
+                        "confidence": 0.9994364976882935,
+                        "name": "食物饮料",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9998117089271545,
+                        "name": "面部",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.8567114472389221,
+                        "name": "日常行为",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9996705055236816,
+                        "name": "衣服",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9630321860313416,
+                        "name": "其他场景",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9942723512649536,
+                        "name": "日常用品",
+                        "tag_level": 1
+                    },
+                    {
+                        "confidence": 0.9998117089271545,
+                        "parent_name": "面部",
+                        "name": "人",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8343067765235901,
+                        "parent_name": "食物饮料",
+                        "name": "饮料",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9971349239349365,
+                        "parent_name": "衣服",
+                        "name": "T恤",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9957389235496521,
+                        "parent_name": "面部",
+                        "name": "人像",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9942723512649536,
+                        "parent_name": "日常用品",
+                        "name": "餐具",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9994364976882935,
+                        "parent_name": "食物饮料",
+                        "name": "菜品",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.993707537651062,
+                        "parent_name": "面部",
+                        "name": "男性",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9630321860313416,
+                        "parent_name": "其他场景",
+                        "name": "快餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7879353761672974,
+                        "parent_name": "日常行为",
+                        "name": "早午餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9996705055236816,
+                        "parent_name": "衣服",
+                        "name": "服装",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.8567114472389221,
+                        "parent_name": "日常行为",
+                        "name": "晚餐",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.7285393476486206,
+                        "parent_name": "日常行为",
+                        "name": "吃",
+                        "tag_level": 2
+                    },
+                    {
+                        "confidence": 0.9305303692817688,
+                        "parent_name": "菜品",
+                        "name": "小吃",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.9983654618263245,
+                        "parent_name": "菜品",
+                        "name": "烹饪 (菜品)",
+                        "tag_level": 3
+                    },
+                    {
+                        "confidence": 0.9994364976882935,
+                        "parent_name": "菜品",
+                        "name": "碟",
+                        "tag_level": 3
+                    }
+                ],
+                "video_media_video_stream": [
+                    {
+                        "duration": "0.133289",
+                        "clarity": "1080",
+                        "fps": "180000/2999",
+                        "bitrate": "20641180",
+                        "code_name": "h264",
+                        "rotate": "90"
+                    }
+                ],
+                "video_media_audio_stream": [
+                    {
+                        "duration": "0.085333",
+                        "channels": 2,
+                        "channel_layout": "stereo",
+                        "bit_rate": "127875",
+                        "code_name": "aac",
+                        "sample_rate": "48000"
+                    }
+                ],
+                "duration": "0.133"
+            },
+            "video_preview_metadata": {
+                "bitrate": "94004381",
+                "duration": "0.133300",
+                "audio_format": "aac",
+                "video_format": "h264",
+                "frame_rate": "180000/2999",
+                "height": 1920,
+                "width": 1080,
+                "template_list": [
+                    {
+                        "template_id": "LD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "SD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "HD",
+                        "status": "finished"
+                    },
+                    {
+                        "template_id": "FHD",
+                        "status": "finished"
+                    }
+                ]
+            },
+            "punish_flag": 0
+        }
+    ],
+    "next_marker": ""
+}
+</code></pre>
+<h4 id="toc_h4_3">刷新token</h4>
+<p><a href="https://auth.aliyundrive.com/v2/account/token" target="_blank">https://auth.aliyundrive.com/v2/account/token</a></p>
+<p>主要请求头</p>
+<p>| key | value | 备注 |<br>
+| - | - | - |<br>
+| Content-Type | application/x-www-form-urlencoded | 请求body类型 |</p>
+<p>Request Body</p>
+<pre><code class="language-json">{"refresh_token":"81c23489bc474a52aba2682171b49bd7","grant_type":"refresh_token"}
+</code></pre>
+<p>Response</p>
+<pre><code class="language-json">{
+    "access_token": "eyJhbGciOiJSUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOiIxODllZDE1ZjM4MDU0MjdkOTE5NTk0YjJlM2VmYjY0OSIsImN1c3RvbUpzb24iOiJ7XCJjbGllbnRJZFwiOlwiMjVkelgzdmJZcWt0Vnh5WFwiLFwiZG9tYWluSWRcIjpcImJqMjlcIixcInNjb3BlXCI6W1wiRFJJVkUuQUxMXCIsXCJTSEFSRS5BTExcIixcIkZJTEUuQUxMXCIsXCJVU0VSLkFMTFwiLFwiU1RPUkFHRS5BTExcIixcIlNUT1JBR0VGSUxFLkxJU1RcIixcIkJBVENIXCIsXCJPQVVUSC5BTExcIixcIklNQUdFLkFMTFwiLFwiSU5WSVRFLkFMTFwiXSxcInJvbGVcIjpcInVzZXJcIn0iLCJleHAiOjE2MTcxNjQ1OTMsImlhdCI6MTYxNzE1NzMzM30.Aiyx0_Uu6-VXmKYiwg7o-7yVn56JZ4TdPlutWy1gKdCTDBEiwDpz-DAJ8b0v_Jb4jkn-oKIY0OYtd0b3ED3eSrASAZzGYpO5G-nNAfP8lalQvniHxMOIkpuZR5VQILwnGaGWySyOLtSe4iqX0eZ_aIloakp_u-I7PMDaHCxps9U",
+    "refresh_token": "IY0OYtd0b3ED3eSrASAZz",
+    "expires_in": 7200,
+    "token_type": "Bearer",
+    "user_id": "189ed15f3805427d919594b2e3efb649",
+    "user_name": "156***040",
+    "avatar": "",
+    "nick_name": "",
+    "default_drive_id": "1223242",
+    "default_sbox_drive_id": "1223243",
+    "role": "user",
+    "status": "enabled",
+    "expire_time": "2021-03-31T04:23:13Z",
+    "state": "",
+    "exist_link": [],
+    "need_link": false,
+    "user_data": {
+        "DingDingRobotUrl": "https://oapi.dingtalk.com/robot/send?access_token=0b4a936d0e98c08608cd99f693393c18fa905aa0868215485a28497501916fec",
+        "EncourageDesc": "内测期间有效反馈前10名用户将获得终身免费会员",
+        "FeedBackSwitch": true,
+        "FollowingDesc": "34848372",
+        "back_up_config": {
+            "手机备份": {
+                "folder_id": "605bf483c4632a898a0647b982411042b3461108",
+                "photo_folder_id": "605bf483ca63adc60aad4d32abc75fa248c8c595",
+                "sub_folder": {},
+                "video_folder_id": "605bf483fbfe413356664e6aad0531ff9f9080b7"
+            }
+        },
+        "ding_ding_robot_url": "https://oapi.dingtalk.com/robot/send?access_token=0b4a936d0e98c08608cd99f693393c18fa905aa0868215485a28497501916fec",
+        "encourage_desc": "内测期间有效反馈前10名用户将获得终身免费会员",
+        "feed_back_switch": true,
+        "following_desc": "34848372"
+    },
+    "pin_setup": false,
+    "is_first_login": false,
+    "need_rp_verify": false,
+    "device_id": "71d6242ef0a44219b4cfa34d968115b5"
+}
+</code></pre>
+<p>得到的access_token为请求api必备的鉴权api，基本上所有的请求，请求头都需要加入<strong>authorization</strong>值就是access_token，<strong>"expires_in": 7200</strong>  表示刷新时间为2小时。</p>
+<h4 id="toc_h4_4">获取用户信息</h4>
+<p><a href="https://api.aliyundrive.com/v2/user/get" target="_blank">https://api.aliyundrive.com/v2/user/get</a></p>
+<p>Request Header</p>
+<p>| key | value | 备注 |<br>
+| - | - | - |<br>
+| authorization | eyJhbGciOiJSU... | access_token（2小时刷新一次）详见刷新token |</p>
+<p>Request Body</p>
+<pre><code class="language-json">{}
+</code></pre>
+<p>Response Body</p>
+<pre><code class="language-json">{
+    "domain_id": "bj29",
+    "user_id": "189ed15f3805427d919594b2e3efb649",
+    "avatar": "",
+    "created_at": 1614338949038,
+    "updated_at": 1616639107250,
+    "email": "",
+    "nick_name": "",
+    "phone": "156***40",
+    "role": "user",
+    "status": "enabled",
+    "user_name": "156***040",
+    "description": "",
+    "default_drive_id": "1223242",
+    "user_data": {
+        "back_up_config": {
+            "手机备份": {
+                "folder_id": "605bf483c4632a898a0647b982411042b3461108",
+                "photo_folder_id": "605bf483ca63adc60aad4d32abc75fa248c8c595",
+                "sub_folder": {},
+                "video_folder_id": "605bf483fbfe413356664e6aad0531ff9f9080b7"
+            }
+        }
+    }
+}
+</code></pre>
+<h4 id="toc_h4_5">获取文件详情</h4>
+<p><a href="https://api.aliyundrive.com/v2/file/get" target="_blank">https://api.aliyundrive.com/v2/file/get</a></p>
+<p>Request Header</p>
+<p>| key | value | 备注 |<br>
+| - | - | - |<br>
+| authorization | eyJhbGciOiJSU... | access_token（2小时刷新一次）详见刷新token |</p>
+<p>Request Body</p>
+<pre><code class="language-json">{
+    "drive_id":"1223242",
+	"file_id":"6038dc66b124e011132a46aaaaf6fffff08ebc36"
+}
+</code></pre>
+<p>dirve_id 表示磁盘id</p>
+<p>file_id 表示要获取的文件的id</p>
+<pre><code class="language-json">{
+    "drive_id": "1223242",
+    "domain_id": "bj29",
+    "file_id": "6059622cd2e3111a4a4b41d2a640c2287188b024",
+    "name": "navicatpremiumchspj.zip",
+    "type": "file",
+    "content_type": "application/oct-stream",
+    "created_at": "2021-03-23T03:36:12.889Z",
+    "updated_at": "2021-03-23T03:36:12.889Z",
+    "file_extension": "zip",
+    "hidden": false,
+    "size": 71804315,
+    "starred": false,
+    "status": "available",
+    "upload_id": "rapid-73cf6a54-2db8-4150-9528-0eab7d68df6b",
+    "parent_file_id": "605962258b64be31035f450289ff610f06b627bb",
+    "crc64_hash": "3814220635283411191",
+    "content_hash": "F1D49F8641661ECE1CA41A17588A0106FD79C0F0",
+    "content_hash_name": "sha1",
+    "download_url": "https://bj29.cn-beijing.data.alicloudccp.com/5fb4ff0f2d4647bc93d24b0f9f02082e9aa698e8%2F5fb4ff0f02c43de37548425ab0120125a4bf5e90?di=bj29&amp;dr=1223242&amp;f=6059622cd2e3111a4a4b41d2a640c2287188b024&amp;response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27navicatpremiumchspj.zip&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617160047&amp;x-oss-signature=uqUjVis%2BKqQK3bn%2FWF8NF48WoInDRJrKcWvsZUM43bk%3D&amp;x-oss-signature-version=OSS2",
+    "url": "https://bj29.cn-beijing.data.alicloudccp.com/5fb4ff0f2d4647bc93d24b0f9f02082e9aa698e8%2F5fb4ff0f02c43de37548425ab0120125a4bf5e90?di=bj29&amp;dr=1223242&amp;f=6059622cd2e3111a4a4b41d2a640c2287188b024&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-expires=1617160047&amp;x-oss-signature=KmgpmoZ%2FXgx8%2FLyZyPSPS8mN68Zubk%2FPXCafZ5KMdJ4%3D&amp;x-oss-signature-version=OSS2",
+    "category": "zip",
+    "encrypt_mode": "none",
+    "punish_flag": 0,
+    "trashed": false
+}
+</code></pre>
+<h4 id="toc_h4_6">获取文件下载链接</h4>
+<p><a href="https://api.aliyundrive.com/v2/file/get_download_url" target="_blank">https://api.aliyundrive.com/v2/file/get_download_url</a></p>
+<p>请求跟获取文件详情一致</p>
+<p>Respones Body</p>
+<pre><code class="language-json">{
+    "method":"GET",
+    "url":"https://bj29.cn-beijing.data.alicloudccp.com/5fb4ff0f2d4647bc93d24b0f9f02082e9aa698e8%2F5fb4ff0f02c43de37548425ab0120125a4bf5e90?di=bj29&amp;dr=1223242&amp;f=6059622cd2e3111a4a4b41d2a640c2287188b024&amp;response-content-disposition=attachment%3B+filename%2A%3DUTF-8%27%27navicatpremiumchspj.zip&amp;u=189ed15f3805427d919594b2e3efb649&amp;x-oss-access-key-id=LTAIsE5mAn2F493Q&amp;x-oss-additional-headers=referer&amp;x-oss-expires=1617160338&amp;x-oss-signature=H0D7ibFJ3hKuNeWqWpo5flMJBPEtQJvR%2FQ%2FxhlAfKT4%3D&amp;x-oss-signature-version=OSS2",
+    "expiration":"2021-03-31T03:12:18.595Z",
+    "size":71804315,
+    "ratelimit":{
+        "part_speed":-1,
+        "part_size":-1
+    }
+}
+
+</code></pre>
+<h3 id="toc_h3_7">搭建</h3>
+<p>直接使用guns框架速搭</p>
+<h4 id="toc_h4_8">实现的功能</h4>
+<ul>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked disabled readonly>&nbsp;文件列表</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked disabled readonly>&nbsp;文件下载</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked disabled readonly>&nbsp;视频在线播放</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked disabled readonly>&nbsp;批量复制文件下载链接</li>
+<li class="task-list-item"><input type="checkbox" class="task-list-item-checkbox" checked disabled readonly>&nbsp;定时刷新token</li>
+</ul>
+<h4 id="toc_h4_9">代码</h4>
+<h5 id="toc_h5_10">定时刷新token</h5>
+<pre><code class="language-java">package cn.stylefeng.guns.core.schedue.token;
+
+import cn.stylefeng.guns.config.aliyunpan.AliYunPanProperties;
+import cn.stylefeng.guns.sys.core.constant.Const;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import lombok.extern.log4j.Log4j2;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.entity.UrlEncodedFormEntity;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.message.BasicNameValuePair;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.InitBinder;
+
+import javax.annotation.PostConstruct;
+import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.util.ArrayList;
+import java.util.List;
+
+/**
+ * @program: guns-vip
+ * @author: wkj
+ * @create: 2021-03-26 17:31
+ **/
+@Service
+@Log4j2
+public class AliYunPanToken {
+
+    @Autowired
+    private AliYunPanProperties aliYunPanProperties;
+
+    private CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+
+    /**
+     * 刷新token 获取 access_token
+     * @return
+     */
+    @PostConstruct
+    public void refreshToken(){
+        HttpPost httpPost = new HttpPost(Const.REFRESH_TOKEN_URI);
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/x-www-form-urlencoded");
+        List&lt;BasicNameValuePair&gt; params = new ArrayList&lt;&gt;();
+        params.add(new BasicNameValuePair("refresh_token",aliYunPanProperties.getRefreshToken()));
+        UrlEncodedFormEntity formEntity = new UrlEncodedFormEntity(params, StandardCharsets.UTF_8);
+        httpPost.setEntity(formEntity);
+        CloseableHttpResponse response = null;
+        try {
+            response = httpClient.execute(httpPost);
+            HttpEntity entity = response.getEntity();
+            String s = EntityUtils.toString(entity);
+            JSONObject resJson = JSON.parseObject(s);
+            aliYunPanProperties.setRefreshToken(resJson.getString("refresh_token"));
+            aliYunPanProperties.setAccessToken(resJson.getString("access_token"));
+            aliYunPanProperties.setDeviceId(resJson.getString("default_drive_id"));
+            log.info("刷新token成功!!");
+
+        } catch (Exception e) {
+            e.printStackTrace();
+            log.error("刷新token失败，请检查refresh_token是否过期");
+        }
+    }
+
+
+}
+</code></pre>
+<pre><code class="language-java">/**
+* 每两小时执行一次 刷新token 因为access_token 每两小时过期一次
+*/
+@Scheduled(cron = "0 0 0/2 * * *")
+    public void cron() {
+        log.info("定时任务：开始刷新token");
+        aliYunPanToken.refreshToken();
+    }
+</code></pre>
+<h5 id="toc_h5_11">文件列表</h5>
+<pre><code class="language-java">package cn.stylefeng.guns.modular.aliyun.service;
+
+import cn.stylefeng.guns.config.aliyunpan.AliYunPanProperties;
+import cn.stylefeng.guns.core.schedue.token.AliYunPanToken;
+import com.alibaba.fastjson.JSON;
+import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.lang3.StringUtils;
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpHeaders;
+import org.apache.http.client.methods.CloseableHttpResponse;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.entity.StringEntity;
+import org.apache.http.impl.client.CloseableHttpClient;
+import org.apache.http.impl.client.HttpClientBuilder;
+import org.apache.http.util.EntityUtils;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.io.IOException;
+
+/**
+ * @program: guns-vip
+ * @author: wkj
+ * @create: 2021-03-27 10:21
+ **/
+@Service
+public class AliYunPanService {
+
+    @Autowired
+    private AliYunPanProperties aliYunPanProperties;
+
+    @Autowired
+    private AliYunPanToken aliYunPanToken;
+
+    private CloseableHttpClient httpClient = HttpClientBuilder.create().build();
+
+    /**
+     * 判断有没有过期
+     * @return
+     */
+    public CloseableHttpResponse getHttpResponse(HttpPost httpPost){
+        try {
+            CloseableHttpResponse response = httpClient.execute(httpPost);
+            if(response.getStatusLine().getStatusCode()!=200){
+                aliYunPanToken.refreshToken();
+                return httpClient.execute(httpPost);
+            }
+            return response;
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+    /**
+     * 获取用户基本信息
+     */
+
+    public JSONObject getUser(){
+        HttpPost httpPost = new HttpPost("https://api.aliyundrive.com/v2/user/get");
+        httpPost.setHeader(HttpHeaders.AUTHORIZATION, aliYunPanProperties.getAccessToken());
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf8");
+        StringEntity stringEntity = new StringEntity("{}", "utf-8");
+        httpPost.setEntity(stringEntity);
+        CloseableHttpResponse httpResponse = getHttpResponse(httpPost);
+        JSONObject jsonObject = parseResponseToJSON(httpResponse);
+        String driveId = jsonObject.getString("default_drive_id");
+        aliYunPanProperties.setDeviceId(driveId);
+        return jsonObject;
+    }
+
+    /**
+     * 获取文件类表
+     */
+    public JSONObject getList(String parentFileId){
+        HttpPost httpPost = new HttpPost("https://api.aliyundrive.com/v2/file/list");
+        httpPost.setHeader(HttpHeaders.AUTHORIZATION, aliYunPanProperties.getAccessToken());
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf8");
+        JSONObject param = new JSONObject();
+        param.put("drive_id",aliYunPanProperties.getDeviceId());
+//       如果parentFileId不为空，默认顶级
+        param.put("parent_file_id", StringUtils.isNotBlank(parentFileId)?parentFileId:"root");
+        StringEntity stringEntity = new StringEntity(param.toJSONString(), "utf-8");
+        httpPost.setEntity(stringEntity);
+        CloseableHttpResponse httpResponse = getHttpResponse(httpPost);
+        JSONObject jsonObject = parseResponseToJSON(httpResponse);
+
+        return jsonObject;
+    }
+
+    /**
+     * 获取文件详情
+     */
+    public JSONObject getFile(String fileId){
+        HttpPost httpPost = new HttpPost("https://api.aliyundrive.com/v2/file/get");
+        httpPost.setHeader(HttpHeaders.AUTHORIZATION, aliYunPanProperties.getAccessToken());
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf8");
+        JSONObject param = new JSONObject();
+        param.put("drive_id",aliYunPanProperties.getDeviceId());
+        param.put("file_id", fileId);
+        StringEntity stringEntity = new StringEntity(param.toJSONString(), "utf-8");
+        httpPost.setEntity(stringEntity);
+        CloseableHttpResponse httpResponse = getHttpResponse(httpPost);
+        JSONObject jsonObject = parseResponseToJSON(httpResponse);
+        return jsonObject;
+    }
+    /**
+     * 获取文件下载链接
+     */
+    public JSONObject getFileDownLoadUrl(String fileId){
+        HttpPost httpPost = new HttpPost("https://api.aliyundrive.com/v2/file/get_download_url");
+        httpPost.setHeader(HttpHeaders.AUTHORIZATION, aliYunPanProperties.getAccessToken());
+        httpPost.setHeader(HttpHeaders.CONTENT_TYPE, "application/json;charset=utf8");
+        JSONObject param = new JSONObject();
+        param.put("drive_id",aliYunPanProperties.getDeviceId());
+        param.put("file_id", fileId);
+        StringEntity stringEntity = new StringEntity(param.toJSONString(), "utf-8");
+        httpPost.setEntity(stringEntity);
+        CloseableHttpResponse httpResponse = getHttpResponse(httpPost);
+        JSONObject jsonObject = parseResponseToJSON(httpResponse);
+        return jsonObject;
+    }
+
+    /**
+     * 转换响应为json
+     * parse response
+     */
+    public JSONObject parseResponseToJSON(CloseableHttpResponse response){
+        HttpEntity entity = response.getEntity();
+        String s = null;
+        try {
+            s = EntityUtils.toString(entity);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        JSONObject resJson = JSON.parseObject(s);
+        return resJson;
+    }
+
+
+
+
+}
+
+</code></pre>
+<h4 id="toc_h4_12">前端</h4>
+<p>使用layui</p>
+<pre><code class="language-js">layui.use(['table', 'admin', 'ax','element'], function () {
+    var $ = layui.$;
+    var table = layui.table;
+    var $ax = layui.ax;
+    var admin = layui.admin;
+    var element = layui.element;
+    /**
+     * Guns复杂表单的示例管理
+     */
+    var EgForm = {
+        tableId: "fileListTable"
+    };
+    $("#copy").hide();
+    var rendera = function(){
+        $("#nav a").on('click',
+            function () {
+                var queryData = {};
+                queryData['fileId'] = $(this).attr("name");
+                table.reload(EgForm.tableId, {
+                    where: queryData, page: {curr: 1}
+                });
+                $(this).nextAll().remove();
+            }
+        );
+    }
+    /**
+     * 初始化表格的列
+     */
+    EgForm.initColumn = function () {
+        return [[
+            {type: 'checkbox'},
+            {field: 'file_id', align: "center",align: 'center', hide: true, title: '文件id'},
+            {field: 'name', align: "center",align: 'center', sort: true, title: '名称'},
+            {field: 'type',title: '文件类型',hide: true},
+            {field: 'size',title: '文件大小',align: 'center',templet:function (d) {
+                    if(d.type==='file'){
+                        return ((d.size/1024)/1024).toFixed(2)+"MB"
+                    }else{
+                        return '-'
+                    }
+                }},
+            {field: 'typeName',title: '文件类型',templet:function (d) {
+                    return d.type=='file'?'文件':'文件夹';
+                }},
+            {field: 'download_url',title: '下载地址'},
+            {field:'file_extension',title: '文件后缀',hide: true},
+            {align: 'center', toolbar: '#tableBar', title: '操作'}
+        ]];
+    };
+
+    /**
+     * 点击查询按钮
+     */
+    EgForm.search = function () {
+        var queryData = {};
+        queryData['condition'] = $("#condition").val();
+        table.reload(EgForm.tableId, {
+            where: queryData, page: {curr: 1}
+        });
+    };
+
+    /**
+     * 弹出添加对话框
+     */
+    EgForm.openAddDlg = function () {
+        admin.putTempData('formOk', false);
+        top.layui.admin.open({
+            type: 2,
+            title: '添加Guns复杂表单的示例',
+            content: Feng.ctxPath + '/egForm/add',
+            end: function () {
+                admin.getTempData('formOk') &amp;&amp; table.reload(EgForm.tableId);
+            }
+        });
+    };
+
+    /**
+     * 导出excel按钮
+     */
+    EgForm.exportExcel = function () {
+        var checkRows = table.checkStatus(EgForm.tableId);
+        if (checkRows.data.length === 0) {
+            Feng.error("请选择要获取下载链接的文件");
+        } else {
+            var urls='';
+            for (let i = 0; i &lt; checkRows.data.length; i++) {
+                if(checkRows.data[0].type==='file'){
+                    urls+=checkRows.data[i].download_url+"&lt;br/&gt;"
+                }
+            }
+            if(urls){
+                admin.open({
+                    type: 1,
+                    title: '复制链接',
+                    content: ""+urls,
+                    area:['600px', '500px']
+                });
+            }else{
+                Feng.info("没有文件")
+            }
+        }
+    };
+
+    /**
+     * 点击删除
+     *
+     * @param data 点击按钮时候的行数据
+     */
+    EgForm.onDeleteItem = function (data) {
+        var operation = function () {
+            var ajax = new $ax(Feng.ctxPath + "/egForm/delete", function (data) {
+                Feng.success("删除成功!");
+                table.reload(EgForm.tableId);
+            }, function (data) {
+                Feng.error("删除失败!" + data.responseJSON.message + "!");
+            });
+            ajax.set("formId", data.formId);
+            ajax.start();
+        };
+        Feng.confirm("是否删除?", operation);
+    };
+
+    // 渲染表格
+    var tableResult = table.render({
+        elem: '#' + EgForm.tableId,
+        url: Feng.ctxPath + '/ali/list',
+        page: true,
+        height: "full-98",
+        cellMinWidth: 100,
+        cols: EgForm.initColumn()
+    });
+
+    // 搜索按钮点击事件
+    $('#btnSearch').click(function () {
+        EgForm.search();
+    });
+
+    // 添加按钮点击事件
+    $('#btnAdd').click(function () {
+        window.location.href = Feng.ctxPath + "/egForm/add";
+    });
+
+    // 导出excel
+    $('#btnExp').click(function () {
+        EgForm.exportExcel();
+    });
+
+    EgForm.copy = function (data){
+        if(data.type ==='file'){
+            $("#copy").show();
+            $("#copy").val(data.download_url);
+           var input = document.getElementById("copy")
+            input.select();
+            input.setSelectionRange(0, 9999);
+            if (document.execCommand('Copy')) {
+                Feng.success("复制成功")
+            }
+            $("#copy").hide();
+        }else{
+            Feng.info("文件夹没有链接！")
+        }
+    }
+
+    EgForm.player = function (data){
+        admin.open({
+            type: 2,
+            title: '播放',
+            content: Feng.ctxPath+"/ali/player?fileId="+data.file_id,
+        });
+    }
+    // 工具条点击事件
+    table.on('tool(' + EgForm.tableId + ')', function (obj) {
+        var data = obj.data;
+        var layEvent = obj.event;
+
+        if (layEvent === 'delete') {
+            EgForm.onDeleteItem(data);
+        } else if(layEvent === 'copy') {
+            EgForm.copy(data);
+        } else if(layEvent === 'player'){
+            EgForm.player(data);
+        }
+    });
+
+    table.on('rowDouble('+EgForm.tableId+')', function(obj){
+        //获取当前行的数据
+        var data = obj.data;
+        if(data.type === 'folder'){
+            var queryData = {};
+            queryData['fileId'] = data.file_id;
+            table.reload(EgForm.tableId, {
+                where: queryData, page: {curr: 1}
+            });
+            $("#nav").append("&lt;span lay-separator&gt;/&lt;/span&gt;&lt;a href='#' name='"+data.file_id+"'&gt;"+data.name+"&lt;/a&gt;");
+            rendera();
+            // element.render('breadcrumb','path');
+        }else{
+            Feng.info("暂不支持打开文件");
+        }
+    });
+
+
+
+
+
+
+
+
+});
+
+</code></pre>
+<pre><code class="language-html">@layout("/common/_container.html",{js:["/assets/aliyunpan/aliyunpan.js"]}){
+
+&lt;div class="layui-body-header"&gt;
+    &lt;span class="layui-body-header-title"&gt;文件列表&lt;/span&gt;
+&lt;/div&gt;
+&lt;input type="text" id="copy"&gt;
+&lt;div class="layui-fluid"&gt;
+    &lt;div class="layui-row layui-col-space15"&gt;
+        &lt;div class="layui-col-sm12 layui-col-md12 layui-col-lg12"&gt;
+            &lt;div class="layui-card"&gt;
+                &lt;div class="layui-card-body"&gt;
+                    &lt;div class="layui-form toolbar"&gt;
+                        &lt;div class="layui-form-item"&gt;
+                            &lt;div class="layui-inline"&gt;
+                                &lt;input id="condition" class="layui-input" type="text" placeholder="名称"/&gt;
+                            &lt;/div&gt;
+                            &lt;div class="layui-inline"&gt;
+                                &lt;button id="btnSearch" class="layui-btn icon-btn"&gt;&lt;i class="layui-icon"&gt;&lt;/i&gt;搜索
+                                &lt;/button&gt;
+&lt;!--                                &lt;button id="btnAdd" class="layui-btn icon-btn"&gt;&lt;i class="layui-icon"&gt;&lt;/i&gt;添加--&gt;
+&lt;!--                                &lt;/button&gt;--&gt;
+                                &lt;button id="btnExp" class="layui-btn icon-btn"&gt;&lt;i class="layui-icon"&gt;&lt;/i&gt;批量下载
+                                &lt;/button&gt;
+                            &lt;/div&gt;
+                        &lt;/div&gt;
+                    &lt;/div&gt;
+                    &lt;span id="nav" class="layui-breadcrumb" lay-separator="/" lay-filter="path"&gt;
+                        &lt;a href='#' name="root"&gt;首页&lt;/a&gt;
+                    &lt;/span&gt;
+                    &lt;table class="layui-table" id="fileListTable" lay-filter="fileListTable"&gt;&lt;/table&gt;
+                &lt;/div&gt;
+            &lt;/div&gt;
+        &lt;/div&gt;
+    &lt;/div&gt;
+&lt;/div&gt;
+
+&lt;script type="text/html" id="tableBar"&gt;
+    {{# if(d.file_extension=='mp4'){ }}
+        &lt;a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="player"&gt;播放&lt;/a&gt;
+    {{# } }}
+    {{# if(d.type=='file'){ }}
+        &lt;a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="copy"&gt;复制链接&lt;/a&gt;
+    {{# } }}
+    &lt;a class="layui-btn layui-btn-danger layui-btn-xs" lay-event="edit"&gt;编辑&lt;/a&gt;
+&lt;/script&gt;
+@}
+</code></pre>
+<h3 id="toc_h3_13">最终效果</h3>
+<h4 id="toc_h4_14">首页</h4>
+<p><img src="https://b3logfile.com/file/2021/03/solo-fetchupload-392995195246829384-5821016f.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image-20210331111523367"></p>
+<h4 id="toc_h4_15">播放页面</h4>
+<p><img src="https://b3logfile.com/file/2021/03/solo-fetchupload-1146891221212734720-9caf5ea9.png?imageView2/2/w/1280/format/jpg/interlace/1/q/100" alt="image-20210331111622894"></p>
+<p>只是简单地实现了一些功能，更多的功能，看心情维护吧。。。</p>
+                    <div>
+                        <hr>
+
+标题：基于阿里云盘的共享云盘搭建<br>
+作者：<a href="https://lengmou233.github.io" target="_blank">2027944416</a><br>
+地址：<a href="https://lengmou233.github.io/articles/2021/03/31/1617160877140.html" target="_blank">https://lengmou233.github.io/articles/2021/03/31/1617160877140.html</a><br>
+
+<!-- 签名档内可使用 HTML、JavaScript -->
+<br>
+                    </div>
+            </section>
+        </div>
+
+    </div>
+        <div class="post__toc">
+<ul class="article__toc">
+        <li class="toc__h3">
+            <a href="#toc_h3_0">背景</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_1">抓到的api</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_2">显示文件列表</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_3">刷新token</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_4">获取用户信息</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_5">获取文件详情</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_6">获取文件下载链接</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_7">搭建</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_8">实现的功能</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_9">代码</a>
+        </li>
+        <li class="toc__h5">
+            <a href="#toc_h5_10">定时刷新token</a>
+        </li>
+        <li class="toc__h5">
+            <a href="#toc_h5_11">文件列表</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_12">前端</a>
+        </li>
+        <li class="toc__h3">
+            <a href="#toc_h3_13">最终效果</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_14">首页</a>
+        </li>
+        <li class="toc__h4">
+            <a href="#toc_h4_15">播放页面</a>
+        </li>
+</ul>        </div>
+        <div class="wrapper">
+            <div id="gitalk-container"></div>
+            <div id="vcomment"
+                 style="    margin-bottom: 40px; margin-top: 80px;
+        border: 1px solid rgba(255,255,255,0.8);
+        border-radius: 5px;
+        background: rgba(255,255,255,0.9);
+        box-shadow: 0 1px 4px rgba(0,0,0,0.04);
+        padding: 20px;"
+                 data-name="2027944416" data-postId="1617160877140"></div>
+            <div id="b3logsolocomments"></div>
+        </div>
+    <div class="article__bottom">
+        <div class="wrapper">
+            <div class="fn__flex">
+                <div class="item" id="randomArticles"></div>
+                <div class="item" id="relevantArticles"></div>
+            </div>
+        </div>
+    </div>
+    
+</div>
+<script type="text/javascript"
+        src="https://lengmou233.github.io/skins/Bubble/js/TweenMax.min.js?1618458943634"
+        charset="utf-8"></script>
+<footer class="footer">
+    <div class="wrapper">
+        
+        <a href="https://github.com/lengmou233"
+           title="https://github.com/lengmou233"
+           class="user__site"
+           target="_blank" rel="noopener nofollow">
+            <svg viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M16 0.331c-8.836 0-16 7.163-16 16 0 7.069 4.585 13.067 10.942 15.182 0.8 0.148 1.094-0.347 1.094-0.77 0-0.381-0.015-1.642-0.022-2.979-4.452 0.968-5.391-1.888-5.391-1.888-0.728-1.849-1.776-2.341-1.776-2.341-1.452-0.993 0.11-0.973 0.11-0.973 1.606 0.113 2.452 1.649 2.452 1.649 1.427 2.446 3.743 1.739 4.656 1.33 0.143-1.034 0.558-1.74 1.016-2.14-3.554-0.404-7.29-1.777-7.29-7.907 0-1.747 0.625-3.174 1.649-4.295-0.166-0.403-0.714-2.030 0.155-4.234 0 0 1.344-0.43 4.401 1.64 1.276-0.355 2.645-0.532 4.005-0.539 1.359 0.006 2.729 0.184 4.008 0.539 3.054-2.070 4.395-1.64 4.395-1.64 0.871 2.204 0.323 3.831 0.157 4.234 1.026 1.12 1.647 2.548 1.647 4.295 0 6.145-3.743 7.498-7.306 7.895 0.574 0.497 1.085 1.47 1.085 2.963 0 2.141-0.019 3.864-0.019 4.391 0 0.426 0.288 0.925 1.099 0.768 6.354-2.118 10.933-8.113 10.933-15.18 0-8.837-7.164-16-16-16z"></path>
+            </svg>
+        </a>
+
+        <a href="tencent://message/?uin=2027944416"
+           title="2027944416"
+           target="_blank"
+           class="user__site" rel="noopener nofollow">
+            <svg viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M4.821 14.393c-0.125-0.304-0.143-0.607-0.143-0.929 0-0.5 0.321-1.304 0.625-1.679-0.018-0.464 0.179-1.411 0.536-1.714 0-3.304 2.554-7.464 5.536-8.893 1.839-0.875 3.768-1.179 5.786-1.179 1.571 0 3.286 0.375 4.75 0.982 4.196 1.768 5.143 5.054 6.036 9.25l0.018 0.089c0.518 0.786 0.982 1.714 0.982 2.679 0 0.482-0.321 0.964-0.321 1.393 0 0.036 0.107 0.179 0.125 0.214 1.536 2.268 2.929 4.732 2.929 7.554 0 0.625-0.339 2.804-1.339 2.804-0.696 0-1.464-1.696-1.714-2.161-0.018-0.018-0.036-0.018-0.054-0.018l-0.089 0.071c-0.571 1.482-1.196 2.875-2.357 3.982 1.018 0.982 2.661 0.893 2.964 2.589-0.089 0.196-0.054 0.411-0.196 0.607-1.018 1.536-3.75 1.732-5.393 1.732-2.179 0-3.946-0.571-6-1.179-0.429-0.125-1.071-0.054-1.536-0.107-1.089 1.196-3.75 1.518-5.286 1.518-1.357 0-6.607-0.089-6.607-2.411 0-1 0.214-1.286 0.911-1.929 0.554-0.107 0.964-0.411 1.607-0.446 0.089 0 0.161-0.018 0.25-0.036 0.018-0.018 0.036-0.018 0.036-0.071l-0.036-0.054c-1.232-0.286-2.964-3.393-3.232-4.679l-0.089-0.054c-0.125 0-0.179 0.268-0.214 0.357-0.393 0.911-1.321 1.893-2.357 2h-0.018c-0.143 0-0.089-0.143-0.196-0.179-0.25-0.589-0.411-1.125-0.411-1.786 0-3.571 1.714-6.214 4.5-8.321z"></path>
+            </svg>
+        </a>
+        <a href="javascript:void(0)"
+           class="user__site" title="ml115544880">
+            <svg viewBox="0 0 32 32" width="100%" height="100%">
+                <path d="M9.062 9.203c0-0.859-0.562-1.422-1.422-1.422-0.844 0-1.703 0.562-1.703 1.422 0 0.844 0.859 1.406 1.703 1.406 0.859 0 1.422-0.562 1.422-1.406zM20.672 17.125c0-0.562-0.562-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.859 0 1.422-0.562 1.422-1.141zM16.984 9.203c0-0.859-0.562-1.422-1.406-1.422-0.859 0-1.703 0.562-1.703 1.422 0 0.844 0.844 1.406 1.703 1.406 0.844 0 1.406-0.562 1.406-1.406zM26.906 17.125c0-0.562-0.578-1.125-1.422-1.125-0.562 0-1.125 0.562-1.125 1.125 0 0.578 0.562 1.141 1.125 1.141 0.844 0 1.422-0.562 1.422-1.141zM22.75 10.922c-0.359-0.047-0.719-0.063-1.094-0.063-5.375 0-9.625 4.016-9.625 8.953 0 0.828 0.125 1.625 0.359 2.375-0.359 0.031-0.703 0.047-1.063 0.047-1.422 0-2.547-0.281-3.969-0.562l-3.953 1.984 1.125-3.406c-2.828-1.984-4.531-4.547-4.531-7.656 0-5.391 5.094-9.625 11.328-9.625 5.563 0 10.453 3.391 11.422 7.953zM32 19.687c0 2.547-1.688 4.813-3.969 6.516l0.859 2.828-3.109-1.703c-1.141 0.281-2.281 0.578-3.406 0.578-5.391 0-9.625-3.688-9.625-8.219s4.234-8.219 9.625-8.219c5.094 0 9.625 3.688 9.625 8.219z"></path>
+            </svg>
+        </a>
+ <br>
+        &copy; 2021
+        <a href="https://lengmou233.github.io">冷眸的个人博客</a>
+        &nbsp;&nbsp;<a target="_blank" href="https://beian.miit.gov.cn/" >鲁ICP备20030067号</a>
+        <span class="footer__heart">❤️</span>
+    </div>
+</footer>
+<svg class="side__top" id="sideTop" version="1.1" xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 32 32">
+    <path d="M26.562 13.958c0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303v0c0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303v0zM23.305 10.7c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM20.022 7.417c0 0 0 0 0 0 0 0.72 0.583 1.303 1.303 1.303s1.303-0.583 1.303-1.303c0-0 0-0 0-0v0c0-0 0-0 0-0 0-0.72-0.583-1.303-1.303-1.303s-1.303 0.583-1.303 1.303c0 0 0 0 0 0v0zM29.67 0h-27.339c-0.677 0-1.228 0.551-1.228 1.228s0.551 1.228 1.228 1.228h11.151l-10.725 10.725c-0.476 0.476-0.476 1.253 0 1.729 0.226 0.226 0.551 0.351 0.852 0.351s0.626-0.125 0.852-0.351l10.074-10.074v25.936c0 0.677 0.551 1.228 1.228 1.228s1.228-0.551 1.228-1.228v-26.011c0.476 0.426 1.203 0.426 1.679-0.050s0.476-1.253 0-1.729l-0.576-0.576h11.577c0.677 0 1.228-0.551 1.228-1.228 0-0.626-0.551-1.178-1.228-1.178z"></path>
+</svg>
+<script>
+  var Label = {
+    speech: true,
+    servePath: "https://lengmou233.github.io",
+    staticServePath: "https://lengmou233.github.io",
+    luteAvailable: false,
+    hljsStyle: 'github',
+    langLabel: "zh_CN",
+    version: "4.3.1",
+    staticSite: true,
+    showCodeBlockLn: true,
+    articleId: "1617160877140",
+  }
+</script>
+<script type="text/javascript"
+        src="https://lengmou233.github.io/skins/Bubble/js/common.min.js?1618458943634"
+        charset="utf-8"></script>
+<script type="text/javascript"
+        src="https://lengmou233.github.io/skins/Bubble/js/circleMagic.min.js?1618458943634"
+        charset="utf-8"></script>
+<link type="text/css" rel="stylesheet" href="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.10/index.css"/>
+<script async src="https://cdn.jsdelivr.net/npm/kanbanniang@0.2.10/index.js"></script>
+<div class="solo-kanbanniang">
+    <div class="solo-kanbanniang__tip"></div>
+    <canvas id="soloKanbanniang" width="280" height="250"></canvas>
+    <div class="solo-kanbanniang__tool">
+        <svg id="soloKanbanniangHome" viewBox="0 0 32 32" width="100%" height="100%">
+            <path d="M32 18.967l-16-12.42-16 12.42v-5.064l16-12.42 16 12.42zM28 18.516v12h-8v-8h-8v8h-8v-12l12-9z"></path>
+        </svg>
+        <svg id="soloKanbanniangRSS" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M320.364 768q0 45.728-32 77.728t-77.728 32-77.728-32-32-77.728 32-77.728 77.728-32 77.728 32 32 77.728zM612.94 838.272q1.152 16-9.728 27.424-10.272 12-26.848 12h-77.152q-14.272 0-24.576-9.44t-11.424-23.712q-12.576-130.848-105.44-223.712t-223.712-105.44q-14.272-1.152-23.712-11.424t-9.44-24.576V402.24q0-16.576 12-26.848 9.728-9.728 24.576-9.728h2.848q91.424 7.424 174.848 46.016t148 103.712q65.152 64.576 103.712 148t46.016 174.848z m292.576 1.152q1.152 15.424-10.272 26.848-10.272 11.424-26.272 11.424h-81.728q-14.848 0-25.44-10.016t-11.136-24.288q-6.848-122.848-57.728-233.44t-132.288-192-192-132.288-233.44-58.272q-14.272-0.576-24.288-11.136t-10.016-24.864V109.664q0-16 11.424-26.272 10.272-10.272 25.152-10.272h1.728q149.728 7.424 286.56 68.576t243.136 168q106.848 106.272 168 243.136t68.576 286.56z"></path>
+        </svg>
+        <svg id="soloKanbanniangChat" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M802.42709 96.163153H219.476155c-84.48109 0-154.896836 71.746044-154.896836 157.840888v393.119449c0 86.072331 70.415746 157.819398 154.896836 157.819399h214.038818V925.470963s22.526039 40.168862 64.767096 5.734608c30.965246-25.819039 126.721123-91.828428 171.775248-123.385145h132.369773c84.502579 0 154.896836-83.21526 154.896836-157.839865V251.125481c0-86.094844-70.394257-154.962328-154.896836-154.962328zM301.144176 518.002714c-39.427988 0-70.416769-31.576159-70.416769-71.746044 0-40.168862 30.988782-71.746044 70.416769-71.746044 39.426965 0 70.393233 31.577183 70.393234 71.746044 0 40.169885-30.966269 71.746044-70.393234 71.746044z m208.411657 0c-39.450501 0-70.415746-31.576159-70.415746-71.746044 0-40.168862 30.965246-71.746044 70.415746-71.746044 39.405475 0 70.394257 31.577183 70.394257 71.746044 0 40.169885-30.988782 71.746044-70.394257 71.746044z m211.203236 0c-39.426965 0-70.416769-31.576159-70.416769-71.746044 0-40.168862 30.988782-71.746044 70.416769-71.746044s70.415746 31.577183 70.415746 71.746044c-0.001023 40.169885-30.988782 71.746044-70.415746 71.746044z"></path>
+        </svg>
+        <svg id="soloKanbanniangChange" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M936.672 193.216l-226.88-64c-8.704-2.528-18.112-1.12-25.824 3.776-7.68 4.864-12.896 12.736-14.432 21.728C655.712 236.928 595.328 288 512 288c-71.424 0-142.464-103.296-163.776-143.104-7.136-13.28-22.528-19.84-37.024-15.68l-224 64C73.472 197.152 64 209.728 64 224v256a31.93 31.93 0 0 0 11.712 24.736c7.392 6.08 17.152 8.512 26.56 6.624L224 487.04V832c0 52.928 43.072 96 96 96h384c52.928 0 96-43.072 96-96V519.04l121.728 24.352c9.44 1.92 19.2-0.544 26.56-6.624C955.68 530.656 960 521.6 960 512V224c0-14.336-9.536-26.912-23.328-30.784zM672 800H352c-17.664 0-32-14.304-32-32s14.336-32 32-32h320c17.696 0 32 14.304 32 32s-14.304 32-32 32z"></path>
+        </svg>
+        <svg id="soloKanbanniangPhoto" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M898.048 258.048q23.552-1.024 46.592 9.216t40.96 27.136 28.672 39.424 10.752 46.08l0 390.144q0 24.576-10.752 47.104t-28.672 40.448-40.96 28.16-47.616 10.24l-697.344 0q-24.576 0-48.64-10.24t-42.496-27.648-29.696-40.448-11.264-48.64l0-381.952q0-22.528 10.752-45.568t28.672-41.472 39.936-30.208 44.544-11.776l63.488 0 13.312-83.968q3.072-20.48 18.432-32.768t34.816-12.288l456.704 0q19.456 0 34.304 10.752t16.896 34.304l14.336 83.968 54.272 0zM548.864 712.704q40.96 0 77.824-15.872t63.488-42.496 42.496-62.976 15.872-77.312-15.872-77.312-42.496-62.976-63.488-42.496-77.824-15.872-77.312 15.872-63.488 42.496-43.008 62.976-15.872 77.312 15.872 77.312 43.008 62.976 63.488 42.496 77.312 15.872z"></path>
+        </svg>
+        <svg id="soloKanbanniangGithub" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M1024 524.8c0 114.346667-32.554667 217.216-97.706667 308.565333-65.066667 91.306667-149.162667 154.538667-252.288 189.610667-11.989333 2.304-20.778667 0.682667-26.325333-4.778667a27.605333 27.605333 0 0 1-8.362667-20.48v-144.213333c0-44.16-11.52-76.501333-34.645333-97.024 25.344-2.730667 48.085333-6.826667 68.309333-12.288a268.629333 268.629333 0 0 0 62.72-26.666667 187.434667 187.434667 0 0 0 53.973334-45.44c14.421333-18.005333 26.197333-41.898667 35.328-71.765333 9.088-29.824 13.653333-64.128 13.653333-102.826667 0-55.125333-17.536-102.058667-52.650667-140.8 16.426667-41.429333 14.677333-87.893333-5.333333-139.392-12.458667-4.096-30.464-1.578667-54.016 7.509334a355.328 355.328 0 0 0-61.312 30.08L640 271.274667a462.336 462.336 0 0 0-128-17.749334c-43.989333 0-86.656 5.930667-128 17.749334a589.824 589.824 0 0 0-28.330667-18.432c-11.776-7.253333-30.336-16.042667-55.68-26.325334-25.344-10.24-44.416-13.312-57.301333-9.216-19.584 51.498667-21.12 97.962667-4.693333 139.434667-35.114667 38.698667-52.650667 85.632-52.650667 140.757333 0 38.698667 4.565333 72.874667 13.653333 102.485334 9.130667 29.610667 20.778667 53.546667 34.986667 71.765333 14.250667 18.218667 32.128 33.493333 53.674667 45.781333 21.546667 12.288 42.453333 21.205333 62.677333 26.666667 20.224 5.461333 43.008 9.557333 68.309333 12.288-17.749333 16.384-28.629333 39.850667-32.64 70.4a130.005333 130.005333 0 0 1-29.994666 10.24c-10.666667 2.261333-23.338667 3.413333-37.973334 3.413333-14.72 0-29.269333-4.906667-43.690666-14.677333-14.464-9.813333-26.794667-24.064-36.992-42.709333a109.226667 109.226667 0 0 0-32.341334-35.541334c-13.141333-9.130667-24.106667-14.592-33.024-16.426666l-13.312-2.048c-9.344 0-15.786667 1.024-19.328 3.072-3.584 2.090667-4.693333 4.693333-3.328 7.893333 1.28 3.157333 3.328 6.4 5.973334 9.557333 2.688 3.2 5.546667 5.930667 8.661333 8.192l4.693333 3.413334c9.770667 4.565333 19.413333 13.226667 29.013334 25.984 9.514667 12.757333 16.512 24.362667 20.992 34.858666l6.656 15.701334c5.76 17.322667 15.530667 31.317333 29.312 42.026666 13.781333 10.666667 28.672 17.536 44.672 20.48 16 2.986667 31.445333 4.565333 46.336 4.821334 14.890667 0.213333 27.221333-0.597333 36.992-2.389334l15.36-2.730666c0 17.28 0.085333 37.546667 0.298666 60.8l0.341334 36.906666a27.050667 27.050667 0 0 1-8.661334 20.48c-5.76 5.461333-14.677333 7.082667-26.666666 4.778667-103.125333-35.072-187.221333-98.261333-252.330667-189.610667C32.554667 742.058667 0 639.146667 0 524.8c0-95.232 22.869333-183.04 68.693333-263.466667A516.266667 516.266667 0 0 1 254.976 70.4C333.44 23.466667 419.114667 0 512 0c92.885333 0 178.56 23.466667 256.981333 70.4a516.266667 516.266667 0 0 1 186.368 190.976C1001.130667 341.802667 1024 429.653333 1024 524.842667z"></path>
+        </svg>
+        <svg id="soloKanbanniangClose" viewBox="0 0 1024 1024" width="32" height="32">
+            <path d="M517.572566143763 1018.6748601482986C238.26554897656422 1018.6748601482986 11.897910175114305 792.2714997690043 11.897910175114305 513.0002041796496c0-279.3070171671984 226.36763880144977-505.71037754649296 505.6746559686481-505.71037754649296 279.2712955893538 0 505.6746559686481 226.40336037929444 505.6746559686481 505.71037754649296C1023.2472221124112 792.2714997690043 796.8795833109612 1018.6748601482986 517.572566143763 1018.6748601482986zM754.7281214542927 339.25044954334646c13.752807470184345-13.752807470184345 9.680547595895998-40.186775075214015-9.073280772537204-58.94060344364717l-2.143294670678079-2.1075730928334457c-18.7538283684332-18.7538283684332-45.15207439561819-22.861809820566194-58.90488186580257-9.073280772537204l-168.21291007038468 168.24863164822932-180.42968969324974-180.46541127109438c-13.967136937252159-13.967136937252159-40.72259874288353-9.823433907274534-59.72647815622916 9.216167083915742l-2.143294670678079 2.143294670678079c-19.039600991190277 19.003879413345654-23.111860865478626 45.75934121897699-9.180445506071107 59.655035000539876l180.42968969324974 180.46541127109438-176.07165719620428 176.03593561835962c-13.788529048028984 13.824250625873615-9.716269173740633 40.151053497369375 9.073280772537204 58.94060344364717l2.1075730928334457 2.1075730928334457c18.7538283684332 18.7538283684332 45.15207439561819 22.897531398410823 58.90488186580257 9.073280772537204l176.10737877404887-176.10737877404887 170.39192631890742 170.42764789675192c13.967136937252159 13.931415359407513 40.686877165038865 9.85915548511917 59.690756578384516-9.180445506071107l2.1790162485227142-2.1790162485227142c19.039600991190277-18.968157835501014 23.147582443323273-45.72361964113239 9.180445506071107-59.690756578384516l-170.39192631890742-170.42764789675192L754.7281214542927 339.25044954334646z"></path>
+        </svg>
+    </div>
+</div>
+
+    <svg viewBox="0 0 32 32" width="100%" height="100%" class="side__top side__top--toc">
+        <path d="M30 18h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM30 6.25h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2h28c1.1 0 2 0.9 2 2s-0.9 2-2 2zM2 25.75h28c1.1 0 2 0.9 2 2s-0.9 2-2 2h-28c-1.1 0-2-0.9-2-2s0.9-2 2-2z"></path>
+    </svg>
+
+<script type="text/javascript">
+    Util.addScript('https://lengmou233.github.io/js/page.min.js?1618458943634', 'soloPageScript')
+    var page = new Page({
+        "commentContentCannotEmptyLabel": "评论不能为空",
+        "oId": "1617160877140",
+        "blogHost": "https://lengmou233.github.io",
+        "randomArticles1Label": "随机阅读：",
+        "externalRelevantArticles1Label": "站外相关阅读："
+    });
+    $(document).ready(function () {
+        page.load();
+    page.tips.externalRelevantArticlesDisplayCount = "0";
+        page.loadRandomArticles('<h3>随机阅读</h3>');
+        page.loadRelevantArticles('1617160877140', '<h3>相关阅读</h3>');
+    Skin.initArticle()
+    });
+</script>
+
+</body>
+</html>
+
+<!-- Generated by Latke (https://github.com/88250/latke) in 24ms, 2021/05/20 14:28:23 -->
