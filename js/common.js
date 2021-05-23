@@ -9,12 +9,14 @@
  * THIS SOFTWARE IS PROVIDED ON AN "AS IS" BASIS, WITHOUT WARRANTIES OF ANY KIND, EITHER EXPRESS OR IMPLIED, INCLUDING BUT NOT LIMITED TO NON-INFRINGEMENT, MERCHANTABILITY OR FIT FOR A PARTICULAR PURPOSE.
  * See the Mulan PSL v2 for more details.
  */
-import $ from 'jquery'
+import $ from "expose-loader?exposes=$,jQuery!jquery"
 import NProgress from 'nprogress'
 import Uvstat from 'uvstat'
 import pjax from './pjax'
 import Vcomment from 'vcmt'
-
+// import layer from './lib/layer/layer.js'
+import Viewer from 'viewerjs';
+import 'viewerjs/dist/viewer.css';
 window.$ = $
 window.Vcomment = Vcomment
 
@@ -138,12 +140,10 @@ window.Util = {
    * 图片预览
    */
   previewImg: function () {
-    $('body').on('click', '.vditor-reset img', function () {
-      if ($(this).hasClass('prevent')) {
-        return
-      }
-      window.open(this.src)
-    })
+    let articles = document.getElementsByClassName('article')
+    if(articles.length>0){
+      const viewer = new Viewer(articles[0], {});
+    }
   },
   /**
    * 异步添加 js
