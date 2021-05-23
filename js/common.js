@@ -141,7 +141,7 @@ window.Util = {
    */
   previewImg: function () {
     let articles = document.getElementsByClassName('article')
-    if(articles.length>0){
+    if(articles.length==1){
       const viewer = new Viewer(articles[0], {});
     }
   },
